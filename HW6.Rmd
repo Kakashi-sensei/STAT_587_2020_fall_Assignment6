@@ -1,0 +1,48 @@
+---
+title: "HW6"
+author: "Tianqi(Tim)"
+date: "10/31/2020"
+output: html_document
+---
+
+```{r}
+#Q1a
+bear <- read.csv("https://raw.githubusercontent.com/Kakashi-sensei/STAT_587_2020_fall_Assignment6/main/bears.csv", header=TRUE)
+
+bear1 <- bear[ -c(2, 7) ]
+pairs(bear1)
+str(bear)
+pairs(bear[,-c(2,7)])
+cor(bear1)
+#q1b
+names(bear1)
+fit.lm <- lm(data=bear, weight ~ chest + length + neck)
+summary(fit.lm)
+anova(fit.equal, fit.lm)
+confint(fit.lm, level=0.95)
+
+#Q2
+predict(fit.lm,newdata = data.frame(length=60, chest=35, neck=24, interval="confidence"))
+
+predict(fit.lm, newdata=data.frame(length=60, chest=35, neck=24), interval="confidence", level=0.95)
+
+predict(fit.lm, newdata=data.frame(length=60, chest=35, neck=24), interval="prediction", level=0.95)
+
+plot(fit.lm$fitted, fit.lm$residuals, pch=20)
+
+library(car)
+qqPlot(fit.lm$residuals, pch=20)
+bear$sex <- as.factor(bear$sex)
+fit.lm2 <- lm(data=bear,weight~ chest + length + neck + sex)
+summary(fit.lm2)
+
+rm(list=ls())
+
+mpi <- read.csv("https://raw.githubusercontent.com/Kakashi-sensei/STAT_587_2020_fall_Assignment6/main/MPI.csv", header=TRUE)
+mpi$Genotype <- as.factor(mpi$Genotype)
+fit.lm <- lm(data=mpi, Eggs~Genotype + Weight)
+summary(fit.lm)
+library(car)
+Anova(fit.lm)
+```
+
